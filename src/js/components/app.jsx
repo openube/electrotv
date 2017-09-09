@@ -1,12 +1,17 @@
 import React from 'react';
+import { Router, Route } from 'react-router';
+import { createHashHistory } from 'history';
 
-export default class extends React.Component {
-  constructor () {
-    super();
-  }
-  render() {
-    return (
-      <h1>Hello, React!</h1>
-    );
-  }
-}
+import Home from './home';
+import Search from './search';
+
+const history = createHashHistory();
+
+export default () => (
+  <Router history={history}>
+    <div>
+      <Route path="/" component={Home} />
+      <Route path="/search" component={Search} />
+    </div>
+  </Router>
+);
