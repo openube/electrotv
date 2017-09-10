@@ -4,6 +4,8 @@ import _ from 'lodash';
 
 import api from '../api';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -43,17 +45,24 @@ export default class extends React.Component {
   }
 }
 
-function renderResults(items) {
-  return items.map(renderItem);
-}
-
-function renderItem(i) {
-  return (
+function renderResults(res) {
+  const items = res.map(i => (
     <div className="item" key={i.id}>
       <img src={i.banner} />
       <h3>{ i.name }</h3>
       <p> { i.overview } </p>
     </div>
+  ));
+
+  return (
+    <ReactCSSTransitionGroup
+      transitionName="fade"
+      transitionAppear={true}
+      transitionAppearTimeout={300}
+      transitionEnterTimeout={500}
+      transitionLeaveTimeout={300}>
+      { items }
+    </ReactCSSTransitionGroup>
   );
 }
 
