@@ -10,12 +10,15 @@ function search(q, cb) {
 
   get(url, (res) => {
     cb((res['Data']['Series'] || []).map(i => {
-      return {
+      const out = {
         id: i.id[0],
         name: i.SeriesName[0],
-        banner: `http://thetvdb.com/banners/${i.banner[0]}` ,
         overview: (i.Overview || [])[0] || 'No Overview'
       };
+      if (i.banner) {
+        out.banner = `http://thetvdb.com/banners/${i.banner[0]}`;
+      }
+      return out;
     }));
   });
 }

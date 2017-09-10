@@ -40,30 +40,30 @@ export default class extends React.Component {
         </div>
       </div>
     );
-
-    function renderResults(items) {
-      return items.map(renderItem);
-    }
-
-    function renderItem(i) {
-      return (
-        <div className="item" key={i.id}>
-          <img src={i.banner} />
-          <h3>{ i.name }</h3>
-          <p> { i.overview } </p>
-        </div>
-      );
-    }
-
-    function spinner() {
-      return (
-        <div className="spinner">
-          <div className="double-bounce1"></div>
-          <div className="double-bounce2"></div>
-        </div>
-      );
-    }
   }
+}
+
+function renderResults(items) {
+  return items.map(renderItem);
+}
+
+function renderItem(i) {
+  return (
+    <div className="item" key={i.id}>
+      <img src={i.banner} />
+      <h3>{ i.name }</h3>
+      <p> { i.overview } </p>
+    </div>
+  );
+}
+
+function spinner() {
+  return (
+    <div className="spinner">
+      <div className="double-bounce1"></div>
+      <div className="double-bounce2"></div>
+    </div>
+  );
 }
 
 const loadDb = _.debounce((vm, q) => load(vm, q), 500);
