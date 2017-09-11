@@ -1,5 +1,6 @@
 import React from 'react';
 import api from '../api';
+import store from '../store';
 
 export default class extends React.Component {
 
@@ -9,6 +10,12 @@ export default class extends React.Component {
       show: this.props.show,
       loading: false
     };
+  }
+
+  componentDidMount() {
+    const show = this.state.show;
+    show.followed = store.isFollowed(this.state.show.id);
+    this.setState(Object.assign(this.state, { show }));
   }
 
   render() {
@@ -21,10 +28,13 @@ export default class extends React.Component {
         <p> { ovw } </p>
         <div className='action'>
           <button
-            className={ cl(this.state.downloading) }
+            className={ cl(this.state.downloading, this.state.show.followed) }
             disabled={this.state.downloading}
             onClick={e => follow(this, i)}>
-            <span className="icon icon-star"></span> FOLLOW
+            <span className="icon icon-star"></span>
+            <span className='f1'>FOLLOW</span>
+            <span className='f2'>FOLLOWING</span>
+            <span className='f3'>UNFOLLOW</span>
           </button>
         </div>
       </div>
@@ -32,9 +42,10 @@ export default class extends React.Component {
   }
 }
 
-function cl(downloading) {
+function cl(downloading, followed) {
   const out = ['btn', 'btn-large', 'btn-primary'];
   downloading && out.push('downloading');
+  followed && out.push('followed')
   return out.join(' ');
 }
 

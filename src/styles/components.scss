@@ -2,12 +2,37 @@
   .action {
     position: absolute;
     bottom: 15px;
+    left: 0;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
     .icon {
       color: white;
       margin-right: 8px;
+    }
+    button {
+      cursor: pointer;
+      .f2, .f3 {
+        display: none;
+      }
+      &.followed:hover {
+        background-color: lighten($main, 10%);
+        .f3 {
+          display: inline;
+        }
+        .f1, .f2 {
+          display: none;
+        }
+      }
+      &.followed {
+        background-color: lighten($main, 20%);
+        .f2 {
+          display: inline;
+        }
+        .f1 {
+          display: none;
+        }
+      }
     }
   }
 }

@@ -53,7 +53,7 @@ export default class extends React.Component {
 function group(eps) {
   return [
     {
-      title: 'Available To Watch',
+      title: 'Released Last Week',
       episodes: ready(eps)
     },
     {
@@ -100,15 +100,11 @@ function renderEpisode(ep) {
 }
 
 function ready(eps) {
-  const start = moment().add(-1, 'M').startOf('month');
-  const end = moment().add(-1, 'M').endOf('month');
-  return withinPeriod(eps, start, end);
+  return withinPeriod(eps, moment().add(-2, 'week'), moment());
 }
 
 function thisMonth(eps) {
-  const start = moment().startOf('month');
-  const end = moment().endOf('month');
-  return withinPeriod(eps, start, end);
+  return withinPeriod(eps, moment(), moment().endOf('month'));
 }
 
 function nextMonth(eps) {
