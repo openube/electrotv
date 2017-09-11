@@ -1,26 +1,25 @@
 import React from 'react';
-import SideBar from './sidebar';
 import _ from 'lodash';
 
 import api from '../api';
+import SideBar from './sidebar';
+import Spinner from './spinner';
+import Show from './show';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
+const Search = React.createClass({
 
-    this.state = {
-      results: [],
-      loading: false
+  getInitialState () {
+    return {
+      loading: false,
+      results: []
     };
-
-    this.changed = this.changed.bind(this);
-  }
+  },
 
   changed({ target: { value } }) {
     loadDb(this, value);
-  }
+  },
 
   render() {
     return (
@@ -31,11 +30,16 @@ export default class extends React.Component {
             <div className="pane padded-more">
               <form>
                 <div className="form-group">
-                  <input type="email" className="form-control" placeholder="Lookup a Show" autoFocus onChange={this.changed}></input>
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="Lookup a Show"
+                    autoFocus
+                    onChange={this.changed}></input>
                 </div>
               </form>
               <section className='results'>
-                {this.state.loading ? spinner() : renderResults(this.state.results) }
+                {this.state.loading ? <Spinner /> : renderResults(this, this.state.results) }
               </section>
             </div>
           </div>
@@ -43,17 +47,9 @@ export default class extends React.Component {
       </div>
     );
   }
-}
+});
 
-function renderResults(res) {
-  const items = res.map(i => (
-    <div className="item" key={i.id}>
-      <img src={i.banner} />
-      <h3>{ i.name }</h3>
-      <p> { i.overview } </p>
-    </div>
-  ));
-
+function renderResults(vm, res) {
   return (
     <ReactCSSTransitionGroup
       transitionName="fade"
@@ -61,17 +57,8 @@ function renderResults(res) {
       transitionAppearTimeout={300}
       transitionEnterTimeout={500}
       transitionLeaveTimeout={300}>
-      { items }
+      { res.map(i => ( <Show show={i} key={i.id} /> )) }
     </ReactCSSTransitionGroup>
-  );
-}
-
-function spinner() {
-  return (
-    <div className="spinner">
-      <div className="double-bounce1"></div>
-      <div className="double-bounce2"></div>
-    </div>
   );
 }
 
@@ -83,3 +70,5 @@ function load(vm, q) {
     vm.setState({ loading: false, results: res });
   });
 }
+
+export default Search;

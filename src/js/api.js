@@ -1,12 +1,18 @@
 import req from 'request';
 import { parseString } from 'xml2js';
+import fs from 'fs';
+import unzip from 'unzip';
+import http from 'http';
 
-export default { search };
+export default { search, add };
 
-// const API_KEY = process.env.THETVDB_API_KEY;
+const API_HOST = "http://thetvdb.com";
+const KEY = process.env.THETVDB_API_KEY;
+const BASE = `${process.env['HOME']}/.eltv`;
+const BASE_STORE = `${BASE}/store`;
 
 function search(q, cb) {
-  const url = `http://thetvdb.com/api/GetSeries.php?seriesname=${q}`;
+  const url = `${API_HOST}/api/GetSeries.php?seriesname=${q}`;
 
   get(url, (res) => {
     cb((res['Data']['Series'] || []).map(i => {
@@ -16,7 +22,7 @@ function search(q, cb) {
         overview: (i.Overview || [])[0] || 'No Overview'
       };
       if (i.banner) {
-        out.banner = `http://thetvdb.com/banners/${i.banner[0]}`;
+        out.banner = `${API_HOST}/banners/${i.banner[0]}`;
       }
       return out;
     }));
@@ -32,5 +38,27 @@ function get(url, cb) {
       if (err) throw `Error parsing response from ${url}: ${err}`;
       cb(res);
     });
+  });
+}
+
+function add(id, cb) {
+  const zip_url = id => `${API_HOST}/api/${KEY}/series/${id}/all/en.zip`;
+  if (!fs.existsSync(BASE)) { fs.mkdirSync(BASE); }
+  if (!fs.existsSync(BASE_STORE)) { fs.mkdirSync(BASE_STORE); }
+
+  const zipFile = `${BASE_STORE}/${id}.zip`;
+
+  return download(zip_url(id), zipFile, () =>
+    fs.createReadStream(zipFile)
+      .pipe(unzip.Extract({path: `${BASE_STORE}/${id}`}))
+      .on('close', () => cb())
+  );
+}
+
+function download(url, to, cb) {
+  const file = fs.createWriteStream(to);
+  http.get(url, (resp) => {
+    resp.pipe(file);
+    file.on('finish', () => file.close(cb) );
   });
 }

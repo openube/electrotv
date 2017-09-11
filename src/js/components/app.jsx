@@ -10,8 +10,8 @@ const history = createHashHistory();
 export default () => (
   <Router history={history}>
     <div>
-      <Route path="/" component={Home} />
-      <Route path="/search" component={Search} />
+      <Route path="/" component={Home} exact />
+      <Route path="/search" component={Search} exact />
     </div>
   </Router>
 );

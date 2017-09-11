@@ -2,6 +2,25 @@
 
 $main: #875468;
 
+.btn-primary {
+  background-color: $main;
+  color: white;
+  border: 0;
+  background-image: none;
+  transition: background-color 0.1s ease-in;
+  &:hover {
+    background-color: lighten($main, 10%);
+    background-image: none;
+  }
+  &:active {
+    background-color: darken($main, 10%);
+    background-image: none;
+  }
+  &.downloading {
+    background-color: red;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
   color: #484848;
@@ -45,21 +64,38 @@ input {
   color: $main;
 }
 
+.card {
+  position: relative;
+  width: 300px;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,.1);
+  border: 1px solid #bebebe;
+  border-radius: 6px;
+  height: 300px;
+  padding: 20px;
+  overflow-y: hidden;
+  img {
+    width: 100%;
+  }
+}
+
 .results {
+  overflow: hidden;
+  clear: both;
   margin-top: 20px;
   .item {
-    width: 300px;
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 30px rgba(0,0,0,.1);
-    border: 1px solid #bebebe;
-    border-radius: 6px;
-    height: 300px;
-    padding: 20px;
-    overflow-y: hidden;
-    img {
+    .action {
+      position: absolute;
+      bottom: 15px;
+      text-align: center;
       width: 100%;
+      box-sizing: border-box;
+      .icon {
+        color: white;
+        margin-right: 8px;
+      }
     }
   }
 }
@@ -134,4 +170,25 @@ input {
 .fade-appear.fade-appear-active {
   opacity: 1;
   transition: opacity .3s ease-in;
+}
+
+.episodes {
+
+  overflow: hidden;
+  clear: both;
+  margin-top: 22px;
+
+  .item {
+
+    height: 400px;
+
+    .show {
+      font-size: 16px;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 0 0 5px 0;
+    }
+
+  }
+
 }
