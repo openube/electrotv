@@ -17,7 +17,7 @@ export default class extends React.Component {
     const i = this.state.show;
     const ovw = i.overview.length > 128 ? i.overview.substring(0, 128) + "..." : i.overview;
     return (
-      <div className="item card">
+      <div className="series card">
         <img src={i.banner} />
         <h3>{ i.name }</h3>
         <p> { ovw } </p>

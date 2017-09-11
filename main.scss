@@ -2,193 +2,33 @@
 
 $main: #875468;
 
-.btn-primary {
-  background-color: $main;
-  color: white;
-  border: 0;
-  background-image: none;
-  transition: background-color 0.1s ease-in;
-  &:hover {
-    background-color: lighten($main, 10%);
-    background-image: none;
-  }
-  &:active {
-    background-color: darken($main, 10%);
-    background-image: none;
-  }
-  &.downloading {
-    background-color: red;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
-  color: #484848;
-  font-weight: 300;
-}
-
-h1 {
-  font-size: 48px;
-  line-height: 56px;
-  letter-spacing: -0.8px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-h3 {
-  font-size: 22px;
-  line-height: 28px;
-  letter-spacing: -0.2px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
-}
-
-input {
-  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
-  font-size: 19px !important;
-  line-height: 24px !important;
-  letter-spacing: undefined !important;
-  padding-top: undefined !important;
-  padding-bottom: undefined !important;
-  color: #484848 !important;
-  font-weight: normal !important;
-  background-color: transparent !important;
-  border: 1px solid #DBDBDB !important;
-  padding: 11px !important;
-  width: 100% !important;
-  text-overflow: ellipsis !important;
-}
-
-.firm {
-  color: $main;
-}
-
-.card {
-  position: relative;
-  width: 300px;
-  float: left;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 30px rgba(0,0,0,.1);
-  border: 1px solid #bebebe;
-  border-radius: 6px;
-  height: 300px;
-  padding: 20px;
-  overflow-y: hidden;
-  img {
-    width: 100%;
-  }
-}
+@import "./src/styles/basic";
+@import "./src/styles/components";
+@import "./src/styles/animations";
 
 .results {
   overflow: hidden;
   clear: both;
   margin-top: 20px;
-  .item {
-    .action {
-      position: absolute;
-      bottom: 15px;
-      text-align: center;
-      width: 100%;
-      box-sizing: border-box;
-      .icon {
-        color: white;
-        margin-right: 8px;
-      }
-    }
-  }
-}
-
-//
-// Spinner
-//
-.spinner {
-  width: 40px;
-  height: 40px;
-
-  position: relative;
-  margin: 50px auto;
-}
-
-.double-bounce1, .double-bounce2 {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: $main;
-  opacity: 0.6;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
-  animation: sk-bounce 2.0s infinite ease-in-out;
-}
-
-.double-bounce2 {
-  -webkit-animation-delay: -1.0s;
-  animation-delay: -1.0s;
-}
-
-@-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
-}
-
-@keyframes sk-bounce {
-  0%, 100% { 
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 50% { 
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-  }
-}
-
-.fade-enter {
-  opacity: 0.01;
-}
-
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
-}
-
-.fade-leave {
-  opacity: 1;
-}
-
-.fade-leave.fade-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
-
-.fade-appear {
-  opacity: 0.01;
-}
-
-.fade-appear.fade-appear-active {
-  opacity: 1;
-  transition: opacity .3s ease-in;
 }
 
 .episodes {
-
   overflow: hidden;
   clear: both;
   margin-top: 22px;
-
   .item {
-
     height: 400px;
-
     .show {
       font-size: 16px;
       text-transform: uppercase;
       color: #aaa;
       margin: 0 0 5px 0;
     }
-
   }
+}
 
+// HELPERS
+
+.firm {
+  color: $main;
 }
