@@ -1,14 +1,8 @@
 import React from 'react';
-import fs from 'fs';
-import async from 'async';
-import path from 'path';
-import xml2js from 'xml2js';
 import moment from 'moment';
 import _ from 'lodash';
 import Spinner from './spinner';
-
-const BASE = `${process.env['HOME']}/.eltv`;
-const BASE_STORE = `${BASE}/store`;
+import store from '../store';
 
 export default class extends React.Component {
   constructor() {
@@ -37,7 +31,7 @@ export default class extends React.Component {
 
   componentDidMount() {
     this.setState({ loading: true, groups: [] });
-    readAll((err, shows) => {
+    store.readAll((err, shows) => {
       shows.forEach(s => {
         const title = s['Data']['Series'][0]['SeriesName'][0];
         s['Data']['Episode'].forEach(e => {
@@ -117,30 +111,5 @@ function withinPeriod(eps, start, end) {
   return eps.filter(e => {
     const d = moment(e['FirstAired'][0]);
     return d.isSameOrAfter(start) && d.isBefore(end);
-  });
-}
-
-function readAll(cb) {
-  if (!fs.existsSync(BASE_STORE)) {
-    throw 'BASE_STORE directory doesn not exist';
-  }
-
-  return async.map(available(), readSeries, cb);
-}
-
-function available() {
-  return fs
-    .readdirSync(BASE_STORE)
-    .filter(f => fs.statSync(path.join(BASE_STORE, f)).isDirectory());
-}
-
-function readSeries(id, cb) {
-  const xml_file = `${BASE_STORE}/${id}/en.xml`;
-  if (!fs.existsSync(xml_file)) throw "Could not find the show in the local store";
-  const str = fs.readFileSync(xml_file);
-  const parser = new xml2js.Parser();
-  parser.parseString(str, function(err, result) {
-    if (err) throw err;
-    return cb('', result);
   });
 }
