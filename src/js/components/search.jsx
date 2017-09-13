@@ -33,7 +33,7 @@ const Search = React.createClass({
                   <input
                     type="email"
                     className="form-control"
-                    placeholder="Lookup a Show"
+                    placeholder="Search for a TV Show"
                     autoFocus
                     onChange={this.changed}></input>
                 </div>
