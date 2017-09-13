@@ -9,7 +9,7 @@ export default class extends React.Component {
     super();
 
     this.state = {
-      loading: true,
+      loading: false,
       groups: []
     };
 
@@ -17,30 +17,47 @@ export default class extends React.Component {
   }
 
   renderFeed() {
-    return (this.state.groups || []).map(renderGroup);
+    if (this.state.fetching) {
+      return (
+        <h3 style={ {textAlign: 'center'} }>Fetching Data From <span className='firm'>thetvdb.com</span>...</h3>
+      );
+    } else {
+      return (this.state.groups || []).map(renderGroup);
+    }
   }
 
   render() {
     return (
       <div className="pane padded-more">
         <h1>Today is <span className="firm">{ moment().format("DD of MMMM") }</span>, { moment().format("dddd") }</h1>
-        { this.state.loading ? <Spinner /> : this.renderFeed() }
+        { (this.state.loading ||  this.state.spinner) ? <Spinner /> : this.renderFeed() }
       </div>
     );
   }
 
-  componentDidMount() {
-    this.setState({ loading: true, groups: [] });
-    store.readAll((err, shows) => {
-      shows.forEach(s => {
-        const title = s['Data']['Series'][0]['SeriesName'][0];
-        s['Data']['Episode'].forEach(e => {
-          e.show = title;
-        });
-      });
-      const eps = _.flatten(shows.map(s => s['Data']['Episode']));
-      this.setState({ loading: false, groups: group(eps) });
+  fetch(cb) {
+    this.setState(Object.assign(this.state, { fetching: true }));
+    store.updateAll(() => {
+      this.setState(Object.assign(this.state, { fetching: false }));
+      cb();
     });
+  }
+
+  componentDidMount() {
+    this.fetch(() => {
+      this.setState({ loading: true, groups: [] });
+      store.readAll((err, shows) => {
+        shows.forEach(s => {
+          const title = s['Data']['Series'][0]['SeriesName'][0];
+          s['Data']['Episode'].forEach(e => {
+            e.show = title;
+          });
+        });
+        const eps = _.flatten(shows.map(s => s['Data']['Episode']));
+        this.setState({ loading: false, groups: group(eps) });
+      });
+    });
+
   }
 }
 
@@ -62,12 +79,17 @@ function group(eps) {
 }
 
 function renderGroup({ title, episodes }) {
+  const epJSX = episodes.length ? (
+    <div className='episodes'>
+      { episodes.map(renderEpisode) }
+    </div>
+  ) : (
+    <p>Nothing's here. Add more shows</p>
+  );
   return (
     <section key={ title }>
-      <h3> { title } </h3>
-      <div className='episodes'>
-        { episodes.map(renderEpisode) }
-      </div>
+      <h3 className='groupHead'> { title } </h3>
+      { epJSX }
     </section>
   );
 }

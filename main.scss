@@ -27,8 +27,17 @@ $main: #875468;
   }
 }
 
+.groupHead {
+  display: inline-block;
+  padding: 3px 8px;
+  background-color: lighten($main, 50%);
+  border-radius: 6px;
+}
+
 // HELPERS
 
 .firm {
   color: $main;
 }
+
+

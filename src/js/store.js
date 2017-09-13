@@ -2,10 +2,14 @@ import fs from 'fs';
 import async from 'async';
 import path from 'path';
 import xml2js from 'xml2js';
+import rimraf from 'rimraf';
+
+import api from './api';
 
 export default {
   isFollowed,
-  readAll
+  readAll,
+  updateAll
 };
 
 const BASE = `${process.env['HOME']}/.eltv`;
@@ -21,6 +25,28 @@ function readAll(cb) {
   }
 
   return async.map(available(), readSeries, cb);
+}
+
+function updateAll(cb) {
+  return async.map(available(), updateOne, cb);
+}
+
+function updateOne(id, cb) {
+  console.log(`Started ${id}`);
+  rm(id, () =>
+    api.add(id, () => {
+      console.log(`Finished ${id}`);
+      cb();
+    })
+  );
+}
+
+function rm(id, cb) {
+  let files = [
+    `${BASE_STORE}/${id}.zip`,
+    `${BASE_STORE}/${id}`
+  ];
+  return async.map(files, rimraf, cb);
 }
 
 function available() {

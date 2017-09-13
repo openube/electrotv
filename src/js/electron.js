@@ -14,7 +14,7 @@ app.on('activate', onActivated);
 function createWindow () {
 
   cmp.enableLiveReload();
-  win = new BrowserWindow({width: 800, height: 600});
+  win = new BrowserWindow({width: 1080, height: 600});
 
   loadPage();
 
