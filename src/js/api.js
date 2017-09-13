@@ -4,12 +4,10 @@ import fs from 'fs';
 import unzip from 'unzip';
 import http from 'http';
 
-export default { search, add };
+export default { search, download };
 
 const API_HOST = "http://thetvdb.com";
 const KEY = process.env.THETVDB_API_KEY;
-const BASE = `${process.env['HOME']}/.eltv`;
-const BASE_STORE = `${BASE}/store`;
 
 function search(q, cb) {
   const url = `${API_HOST}/api/GetSeries.php?seriesname=${q}`;
@@ -41,21 +39,16 @@ function get(url, cb) {
   });
 }
 
-function add(id, cb) {
-  const zip_url = id => `${API_HOST}/api/${KEY}/series/${id}/all/en.zip`;
-  if (!fs.existsSync(BASE)) { fs.mkdirSync(BASE); }
-  if (!fs.existsSync(BASE_STORE)) { fs.mkdirSync(BASE_STORE); }
-
-  const zipFile = `${BASE_STORE}/${id}.zip`;
-
-  return download(zip_url(id), zipFile, () =>
-    fs.createReadStream(zipFile)
-      .pipe(unzip.Extract({path: `${BASE_STORE}/${id}`}))
+function download(id, to, cb) {
+  const zip_url = `${API_HOST}/api/${KEY}/series/${id}/all/en.zip`;
+  return dwn(zip_url, `${to}.zip`, () =>
+    fs.createReadStream(`${to}.zip`)
+      .pipe(unzip.Extract({path: to}))
       .on('close', () => cb())
   );
 }
 
-function download(url, to, cb) {
+function dwn(url, to, cb) {
   const file = fs.createWriteStream(to);
   http.get(url, (resp) => {
     resp.pipe(file);

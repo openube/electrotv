@@ -9,11 +9,22 @@ import api from './api';
 export default {
   isFollowed,
   readAll,
-  updateAll
+  updateAll,
+  add
 };
 
 const BASE = `${process.env['HOME']}/.eltv`;
 const BASE_STORE = `${BASE}/store`;
+
+function add(id, cb) {
+  if (!fs.existsSync(BASE)) { fs.mkdirSync(BASE); }
+  if (!fs.existsSync(BASE_STORE)) { fs.mkdirSync(BASE_STORE); }
+
+  api.download(id, `${BASE_STORE}/${id}`, () => {
+    cb();
+  });
+
+}
 
 function isFollowed(id) {
   return fs.existsSync(`${BASE_STORE}/${id}`);
@@ -34,7 +45,7 @@ function updateAll(cb) {
 function updateOne(id, cb) {
   console.log(`Started ${id}`);
   rm(id, () =>
-    api.add(id, () => {
+    add(id, () => {
       console.log(`Finished ${id}`);
       cb();
     })

@@ -1,5 +1,4 @@
 import React from 'react';
-import api from '../api';
 import store from '../store';
 
 export default class extends React.Component {
@@ -45,13 +44,13 @@ export default class extends React.Component {
 function cl(downloading, followed) {
   const out = ['btn', 'btn-large', 'btn-primary'];
   downloading && out.push('downloading');
-  followed && out.push('followed')
+  followed && out.push('followed');
   return out.join(' ');
 }
 
 function follow(vm, i) {
   vm.setState({ downloading: true, show: i });
-  api.add(i.id, () => {
+  store.add(i.id, () => {
     vm.setState({ downloading: false, show: i });
   });
 }
