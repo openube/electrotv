@@ -1,9 +1,9 @@
 # electrotv
-A TV shows tracker app build with React and Electron. 
+A TV shows tracker app build with React and Electron.  I called it `ElectroTV` because I'm that creative.
 
 ![ElectroTV](https://www.dropbox.com/s/9zpehporuu2uxct/electro-tv-screen.png?raw=1)
 
-I called it ElectroTV because I'm that creative. In order to use it you will need to a thetvdb.com API key (can't share mine, sorry). Fortunately, [this is very easy](https://www.thetvdb.com/?tab=apiregister).
+To use it you will need a `thetvdb.com` API key (can't share mine, sorry). Fortunately, [this is very easy](https://www.thetvdb.com/?tab=apiregister).
 
 Install
 =====
